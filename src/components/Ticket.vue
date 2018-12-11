@@ -1,6 +1,6 @@
 <template>
   <div class="main-content">
-    ticket
+    ticket1
   </div>
 </template>
 

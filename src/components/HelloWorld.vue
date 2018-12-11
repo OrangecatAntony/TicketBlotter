@@ -4,7 +4,7 @@
    <el-header>
       <i class="el-icon-menu menuControl" v-model="isCollapse" style="color:white" v-on:click="isCollapse=!isCollapse"></i>
       <span class="webTitle">TicketBlotter</span>
-      <el-menu :default-active="activeIndex2" class="el-menu-demo headerMenu" mode="horizontal" @select="handleSelect" text-color=white background-color="#303133" active-text-color="#42b983" >
+      <el-menu :default-active="activeIndex" class="el-menu-demo headerMenu" mode="horizontal" @select="handleSelect" text-color=white background-color="#303133" active-text-color="#42b983" >
        <el-menu-item index="1" class="headerIcon"><i class="el-icon-bell" style="color:white;"></i></el-menu-item>
        <el-submenu index="2">
         <template slot="title"><i class="el-icon-news " style="color:white;"></i></template>
@@ -106,7 +106,7 @@ export default {
 
         //添加选项卡
         addTab: function (tabName) {
-          let newTabIndex = ++this.activeIndex + '';
+          let newTabIndex = ++this.activeIndex;
           let componentName;
           for(let i=0; i<this.tabComponent.length; i++){
             if(this.tabComponent[i].tabName == tabName){
@@ -122,13 +122,26 @@ export default {
           this.currentContent = componentName
         },
         closeTab: function (tab) {
+          console.log(this.currentContent);
 
-          this.tabList = this.tabList.filter(tabSingle => tabSingle.index !== tab.index);
+          let deleteIndex = 0;
+           for(let i=0; i<this.tabList.length; i++){
+            if(this.tabList[i].index == tab.index){
+              deleteIndex = i;
+            }
+          }
+          this.tabList.splice(deleteIndex,1);
           let lastIndex = this.tabList.length-1;
            this.tabIndex = this.tabList[lastIndex].index;
           this.currentContent = this.tabList[lastIndex].component;
-          console.log(this.tabIndex);
-          console.log(this.tabList[lastIndex].component);
+         // this.tabList = this.tabList.filter(tabSingle => tabSingle.index !== tab.index);
+         // let lastIndex = this.tabList.length-1;
+          // this.tabIndex = this.tabList[lastIndex].index;
+          //this.currentContent = this.tabList[lastIndex].component;
+         // console.log(this.tabComponent);
+          //console.log(this.tabIndex);
+          //console.log(this.tabList);
+         // console.log(this.currentContent);
         },
 
         consoleTest: function (){

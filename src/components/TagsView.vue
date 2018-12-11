@@ -73,8 +73,7 @@
    background-color: #42b983;
  }
  .tabs-content {
-   padding-left: 20px;
-   padding-right: 20px;
+
    padding-bottom: 30px;
    height: 100%;
    margin-top:4px;
