@@ -4,7 +4,7 @@
    <el-header>
       <i class="el-icon-menu menuControl" v-model="isCollapse" style="color:white" v-on:click="isCollapse=!isCollapse"></i>
       <span class="webTitle">TicketBlotter</span>
-      <el-menu :default-active="activeIndex" class="el-menu-demo headerMenu" mode="horizontal" @select="handleSelect" text-color=white background-color="#303133" active-text-color="#42b983" >
+      <el-menu class="el-menu-demo headerMenu" mode="horizontal"  text-color=white background-color="#303133" active-text-color="#42b983" >
        <el-menu-item index="1" class="headerIcon"><i class="el-icon-bell" style="color:white;"></i></el-menu-item>
        <el-submenu index="2">
         <template slot="title"><i class="el-icon-news " style="color:white;"></i></template>
@@ -25,11 +25,11 @@
      <el-aside width=auto >
 
      <el-menu default-active="1-4-1" :collapse="isCollapse"class="el-menu-vertical-demo" style="height:100%;background-color:rgb(48, 65, 86);">
-       <el-menu-item index="1" @click.native="addTab('Search')">
+       <el-menu-item index="1" @click.native="newSearch">
                 <i class="el-icon-search"></i>
                 <span slot="title" >Search</span>
               </el-menu-item>
-       <el-menu-item index="2"  @click.native="addTab('Ticket')">
+       <el-menu-item index="2" @click.native="newTicket">
          <i class="el-icon-document"></i>
          <span slot="title">Ticket</span>
        </el-menu-item>
@@ -44,12 +44,8 @@
      </el-menu>
      </el-aside>
      <el-main>
-       <tags-view :tabList="tabList" :tabIndex="tabIndex" @changeTab="changeTab" @closeTab="closeTab">
-         <keep-alive>
-           <component :is="currentContent">
-           </component>
-         </keep-alive>
-       </tags-view>
+       <tags-view></tags-view>
+      <app-main></app-main>
      </el-main>
    </el-container>
  </el-container>
@@ -60,94 +56,54 @@
 import TagsView from './TagsView'
 import Search from './Search'
 import Ticket from './Ticket'
+import AppMain from './AppMain'
 export default {
-  name: 'HelloWorld',
+  name: 'Layout',
+  data(){
+    return{
+      isCollapse: true
+    };
+  },
   components: {
       "TagsView": TagsView,
       "search": Search,
-      "ticket": Ticket
-      },
-   data() {
-        return {
-          isCollapse: true,
-          activeIndex: '1',//现有tab数量
-          tabIndex: 1,  //现在的tab数
-          currentContent: 'ticket',
-          tabComponent: [
-          {
-           tabName: 'Search',
-           componentName: 'search'
-          },
-          {
-           tabName: 'Ticket',
-           componentName: 'ticket'
-          }
-           ],
-           tabList: [
-            {
-              index: 0,
-               name: 'Search',
-              component: 'search'
-            },
-            {
-              index: 1,
-              name: 'Ticket',
-              component: 'ticket'
-            }
-            ]
-           }
-    },
+      "ticket": Ticket,
+      "AppMain": AppMain
+   },
+    watch:{
+    $route(){
+      this.addViewTags();
+    }
+   },
    methods: {
-          // 切换选项卡
-        changeTab: function (tab) {
-        this.tabIndex = tab.index
-        this.currentContent = tab.component
-      },
-
-        //添加选项卡
-        addTab: function (tabName) {
-          let newTabIndex = ++this.activeIndex;
-          let componentName;
-          for(let i=0; i<this.tabComponent.length; i++){
-            if(this.tabComponent[i].tabName == tabName){
-              componentName = this.tabComponent[i].componentName;
-            }
-          }
-          this.tabList.push({
-          index: newTabIndex,
-          name: tabName,
-          component: componentName
-          });
-          this.tabIndex = newTabIndex
-          this.currentContent = componentName
-        },
-        closeTab: function (tab) {
-          console.log(this.currentContent);
-
-          let deleteIndex = 0;
-           for(let i=0; i<this.tabList.length; i++){
-            if(this.tabList[i].index == tab.index){
-              deleteIndex = i;
-            }
-          }
-          this.tabList.splice(deleteIndex,1);
-          let lastIndex = this.tabList.length-1;
-           this.tabIndex = this.tabList[lastIndex].index;
-          this.currentContent = this.tabList[lastIndex].component;
-         // this.tabList = this.tabList.filter(tabSingle => tabSingle.index !== tab.index);
-         // let lastIndex = this.tabList.length-1;
-          // this.tabIndex = this.tabList[lastIndex].index;
-          //this.currentContent = this.tabList[lastIndex].component;
-         // console.log(this.tabComponent);
-          //console.log(this.tabIndex);
-          //console.log(this.tabList);
-         // console.log(this.currentContent);
-        },
-
-        consoleTest: function (){
-        console.log('click success');
+   addViewTags:function(){
+     console.log(this.$route.path);
+     console.log(this.$route.name);
+     console.log(this.$route.query.t);
+      if(this.$route.name){
+      
+        const route = this.$route
+        this.$store.dispatch('addVisitedViews',route);
+     
+      }
+    },
+    newSearch:function(){
+      this.$router.push({
+        path:'/addsearch/search',
+        query:{
+          t: +new Date()
         }
-     }
+      });
+    },
+    newTicket:function(){
+      this.$router.push({
+        path:'/addticket/ticket',
+        query:{
+          t: +new Date()
+        }
+        });
+    }
+  }
 }
 </script>
 

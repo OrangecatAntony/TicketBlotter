@@ -94,7 +94,7 @@
       </div>
       <div class="button-fun">
 
-        <el-button type="success" @click="onSubmit">Search</el-button>
+        <el-button type="success" @click="testPost">Search</el-button>
         <el-button type="success" @click="onSubmit">Clear</el-button>
 
       </div>
@@ -551,7 +551,8 @@ width:168px;
           user: '',
           region: ''
         },
-        tableData: []
+        tableData: [],
+        addr: 'localhost:8080'  //????
       }
     },
     methods: {
@@ -560,6 +561,22 @@ width:168px;
       },
        formatter(row, column) {
         return row.address;
+      },
+      testPost(){
+        console.log('post test start')
+        this.$http.post(
+          this.addr,{
+            name: '1'
+          },{
+            headers:{
+              token: 'a'
+            }
+          }
+        ).then(res=>{
+          console.info(res.data)
+        }, error =>{
+          console.info(error)
+        })
       }
     }
   }
