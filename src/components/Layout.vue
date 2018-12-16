@@ -77,11 +77,7 @@ export default {
    },
    methods: {
    addViewTags:function(){
-     console.log(this.$route.path);
-     console.log(this.$route.name);
-     console.log(this.$route.query.t);
       if(this.$route.name){
-      
         const route = this.$route
         this.$store.dispatch('addVisitedViews',route);
      
@@ -89,17 +85,17 @@ export default {
     },
     newSearch:function(){
       this.$router.push({
-        path:'/addsearch/search',
-        query:{
-          t: +new Date()
+        name:'AddSearch',
+        params:{
+          id: +new Date()
         }
       });
     },
     newTicket:function(){
       this.$router.push({
-        path:'/addticket/ticket',
-        query:{
-          t: +new Date()
+        name:'AddTicket',
+        params:{
+          id: +new Date()
         }
         });
     }

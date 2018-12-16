@@ -16,7 +16,7 @@ export default {
       return this.$store.state.tagsview.visitedviews
     },
     key() {
-      return this.$route.fullPath + this.$route.query.t
+      return this.$route.fullPath + this.$route.params.id
     }
   }
 }

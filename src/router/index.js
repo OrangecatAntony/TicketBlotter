@@ -14,7 +14,7 @@ export default new Router({
       component: Layout,
       children:[
         {
-          path: 'search',
+          path: 'search/:id',
           name: 'AddSearch',
           component: ()=>import("@/components/Search"),
           meta: { title: 'Search' }
@@ -39,7 +39,7 @@ export default new Router({
       component: Layout,
       children:[
         {
-          path: 'ticket',
+          path: 'ticket/:id',
           name: 'AddTicket',
           component: () =>import("@/components/Ticket"),
           meta: { title: 'Ticket'}
